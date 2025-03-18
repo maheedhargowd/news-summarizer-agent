@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Summarizer AI Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>News Summarizer AI Agent</h1>
+        <form method="POST" action="/">
+            <label for="option">Choose an option:</label>
+            <select name="option" id="option" required>
+                <option value="manual" {% if request.form.option == 'manual' %}selected{% endif %}>Enter article manually</option>
+                <option value="fetch" {% if request.form.option == 'fetch' %}selected{% endif %}>Fetch article automatically</option>
+            </select>
+
+            <div id="manual-input" style="display: none;">
+                <label for="article">Enter a news article:</label>
+                <textarea name="article" id="article" rows="4" cols="50" placeholder="Type or paste your article here...">{{ request.form.article }}</textarea>
+            </div>
+
+            <div id="fetch-input" style="display: none;">
+                <label for="topic">Enter a topic (e.g., 'technology', 'wildfire'):</label>
+                <input type="text" name="topic" id="topic" placeholder="Enter topic..." value="{{ request.form.topic }}">
+            </div>
+
+            <button type="submit">Summarize</button>
+        </form>
+
+        {% if article %}
+            <h3>Fetched/Input Article:</h3>
+            <p>{{ article }}</p>
+        {% endif %}
+
+        {% if summary %}
+            <h3>Summary:</h3>
+            <p>{{ summary }}</p>
+        {% endif %}
+
+        {% if error %}
+            <h3>Error:</h3>
+            <p>{{ error }}</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function updateDisplay() {
+            var manual = document.getElementById('manual-input');
+            var fetch = document.getElementById('fetch-input');
+            var optionValue = document.getElementById('option').value;
+
+            if (optionValue === 'manual') {
+                manual.style.display = 'block';
+                fetch.style.display = 'none';
+                document.getElementById('article').required = true;
+                document.getElementById('topic').required = false;
+            } else if (optionValue === 'fetch') {
+                fetch.style.display = 'block';
+                manual.style.display = 'none';
+                document.getElementById('topic').required = true;
+                document.getElementById('article').required = false;
+            }
+        }
+
+        document.getElementById('option').addEventListener('change', updateDisplay);
+        window.onload = updateDisplay;
+    </script>
+</body>
+</html>
