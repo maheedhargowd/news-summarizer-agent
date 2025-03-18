@@ -48,26 +48,24 @@ source venv/bin/activate   # For Windows: venv\Scripts\activate
 ### Step 3: Install Dependencies
 
 ```bash
-pip install Flask requests langchain-openai
+pip install Flask requests langchain-openai python-dotenv
 ```
 
 ### Step 4: API Keys Configuration
 
-Replace your API keys in `news_summarizer.py`:
+This project requires two API keys:
 
-```python
-llm = OpenAI(
-    openai_api_key="YOUR_OPENAI_API_KEY",
-    model="gpt-3.5-turbo-instruct",
-    temperature=0
-)
+- **OpenAI API key** ([Get here](https://platform.openai.com/api-keys))
+- **NewsAPI key** ([Get here](https://newsapi.org))
 
-NEWS_API_KEY = "YOUR_NEWSAPI_KEY"
+Create a `.env` file in your project's root directory and add your API keys securely:
+
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+NEWS_API_KEY=your_newsapi_key_here
 ```
 
-> Get your keys here:
-> - [OpenAI API](https://platform.openai.com/api-keys)
-> - [NewsAPI](https://newsapi.org)
+The `.env` file is included in the `.gitignore` file to prevent accidentally exposing your keys. Your keys will be loaded securely using environment variables.
 
 ---
 
@@ -95,6 +93,8 @@ http://127.0.0.1:5000/
 │   └── index.html
 ├── news_summarizer.py
 ├── requirements.txt
+├── .env                # API keys (Not tracked by git)
+├── .gitignore          # Exclude sensitive files
 └── README.md
 ```
 
